@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
+        $users = User::select('id','name_'.app()->getLocale().' as name','email','password')->get();
         return response()->json([
             'users' => $users,
         ]);
