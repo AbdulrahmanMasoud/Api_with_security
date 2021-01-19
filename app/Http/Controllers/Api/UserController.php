@@ -23,7 +23,7 @@ class UserController extends Controller
         $user = User::select('id','name_'.app()->getLocale().' as name','email','password')->find($request->id);
         if(!$user){
             //this method (returnError) From Trait File
-            return $this->returnError('Cant Find This User');
+            return $this->returnError('E0011','Cant Find This User');
         }
         /* هنا بقا لو لقي الداتا موجوده هيستخدم الميثود اللي هي ريتيرن داتا و انا امررله فيها الكي و الداتا و رساله النجاح */
         //this method (returnData) From Trait File
