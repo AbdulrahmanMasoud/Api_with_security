@@ -18,8 +18,10 @@ use Illuminate\Support\Facades\Route;
 /**
  * ************** MIDDLEWARE COMMENTS *****************
  * ApiCheckPassword==> ده بيحط باسورد علي ال اي بي اي كله و بيشوف هل هو كتب الباسورد بتاع ال اي بي اي صح ولا غلط
- *  changLang==> ده بيجيب الداتا من الداتابيز علي اساس لغه الموقع هل هي عربي او انجليزي 
+ * changLang==> ده بيجيب الداتا من الداتابيز علي اساس لغه الموقع هل هي عربي او انجليزي 
  */
 Route::group(['prefix' => 'users','middleware'=>['api','apiCheckPassword','changeLang']], function () {
     Route::get('/', [UserController::class,'index']);
+    Route::post('get-user', [UserController::class,'getUserById']);
+    Route::post('add-user', [UserController::class,'store']);
 });

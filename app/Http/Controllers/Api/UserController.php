@@ -4,15 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    use GeneralTrait; //هنا انا استدعيته في الكلاس عشان اقدر اقول this
     public function index()
     {
         $users = User::select('id','name_'.app()->getLocale().' as name','email','password')->get();
@@ -20,34 +17,34 @@ class UserController extends Controller
             'users' => $users,
         ]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    /********************************************************/
+    public function getUserById(Request $request){
+        /** هنا انا عمل الميثود دي عشانا اجرب ارجع رساله الخطأ لو الايدي مش موجود */
+        $user = User::select('id','name_'.app()->getLocale().' as name','email','password')->find($request->id);
+        if(!$user){
+            //this method (returnError) From Trait File
+            return $this->returnError('Cant Find This User');
+        }
+        /* هنا بقا لو لقي الداتا موجوده هيستخدم الميثود اللي هي ريتيرن داتا و انا امررله فيها الكي و الداتا و رساله النجاح */
+        //this method (returnData) From Trait File
+        return $this->returnData('user',$user,'Get User Done');
     }
+    /**************************************************************/
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        User::insert([
+            'name_en'=>$request->name_en,
+            'name_ar'=>$request->name_ar,
+            'email'=>$request->email,
+            'password'=>$request->password
+        ]);
+        //دي بترجع رساله نجاح بس
+        //this method (returnSuccessMessage) From Trait File
+        return $this->returnSuccessMessage('Add User Done');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         //
